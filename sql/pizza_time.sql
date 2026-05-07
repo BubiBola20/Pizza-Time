@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2026 at 06:37 AM
+-- Generation Time: May 07, 2026 at 06:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,6 +58,15 @@ CREATE TABLE `pizza` (
   `nama_pizza` varchar(100) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pizza`
+--
+
+INSERT INTO `pizza` (`id_pizza`, `nama_pizza`, `harga`) VALUES
+(1, 'Pepperoni Pizza', 50000),
+(2, 'Cheese Pizza', 45000),
+(3, 'BBQ Chicken Pizza', 60000);
 
 -- --------------------------------------------------------
 
@@ -119,7 +128,7 @@ ALTER TABLE `order_detail`
 -- AUTO_INCREMENT for table `pizza`
 --
 ALTER TABLE `pizza`
-  MODIFY `id_pizza` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pizza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
