@@ -1,0 +1,25 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.main-card {
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.title {
+    color: #E63946;
+    font-weight: bold;
+}
+
+.btn-pizza {
+    background-color: #E63946;
+    color: white;
+    border: none;
+}
+
+.btn-pizza:hover {
+    background-color: #c92c3a;
+    color: white;
+}

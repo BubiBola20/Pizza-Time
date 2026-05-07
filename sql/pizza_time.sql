@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2026 at 06:41 AM
+-- Generation Time: May 07, 2026 at 07:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,8 +77,16 @@ INSERT INTO `pizza` (`id_pizza`, `nama_pizza`, `harga`) VALUES
 CREATE TABLE `users` (
   `id_user` int(11) NOT NULL,
   `username` varchar(100) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL
+  `password` varchar(100) DEFAULT NULL,
+  `role` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id_user`, `username`, `password`, `role`) VALUES
+(1, 'admin', 'admin123', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -134,7 +142,7 @@ ALTER TABLE `pizza`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
