@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2026 at 06:04 AM
+-- Generation Time: May 07, 2026 at 06:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,8 +56,7 @@ CREATE TABLE `order_detail` (
 CREATE TABLE `pizza` (
   `id_pizza` int(11) NOT NULL,
   `nama_pizza` varchar(100) DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL,
-  `gambar` varchar(255) DEFAULT NULL
+  `harga` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -69,7 +68,7 @@ CREATE TABLE `pizza` (
 CREATE TABLE `users` (
   `id_user` int(11) NOT NULL,
   `username` varchar(100) DEFAULT NULL,
-  `PASSWORD` varchar(100) DEFAULT NULL
+  `password` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
