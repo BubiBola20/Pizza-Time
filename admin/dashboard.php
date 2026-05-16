@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'koneksi.php';
+include '../koneksi.php';
 
 // CEK LOGIN ADMIN
 if(!isset($_SESSION['role'])){
