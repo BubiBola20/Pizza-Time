@@ -47,6 +47,132 @@ if(isset($_POST['login'])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar bg-danger">
+
+    <div class="container">
+
+        <!-- LOGO -->
+        <a class="navbar-brand fw-bold"
+           href="index.php">
+
+           🍕 Pizza-Time
+
+        </a>
+
+        <!-- TOGGLER -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <!-- MENU -->
+        <div class="collapse navbar-collapse"
+             id="navbarNav">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <!-- HOME -->
+                <li class="nav-item">
+
+                    <a class="nav-link active"
+                       href="index.php">
+
+                       Home
+
+                    </a>
+
+                </li>
+
+                <!-- MENU -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="menu.php">
+
+                       Menu
+
+                    </a>
+
+                </li>
+
+                <!-- CHECKOUT -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="checkout.php">
+
+                       Checkout
+
+                    </a>
+
+                </li>
+
+                <!-- LOGIN / LOGOUT -->
+                <?php if(isset($_SESSION['username'])) : ?>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="#">
+
+                           Halo,
+                           <?php echo $_SESSION['username']; ?>
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="logout.php">
+
+                           Logout
+
+                        </a>
+
+                    </li>
+
+                <?php else : ?>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="login.php">
+
+                           Login
+
+                        </a>
+
+                    </li>
+
+                <?php endif; ?>
+
+                <!-- CART -->
+                <li class="nav-item ms-lg-3">
+
+                    <a class="btn btn-light rounded-pill px-3"
+                       href="cart.php">
+
+                       🛒 Cart
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
 
     <meta charset="UTF-8">
 

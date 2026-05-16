@@ -4,283 +4,273 @@ session_start();
 include 'koneksi.php';
 
 // AMBIL DATA PIZZA
-$query = mysqli_query($koneksi,
-    "SELECT * FROM pizza");
+$query = mysqli_query(
+    $koneksi,
+    "SELECT * FROM pizza"
+);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Pizza Time - Menu</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet"
-          href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark custom-navbar bg-danger">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar bg-danger">
 
-    <div class="container">
+        <div class="container">
 
-        <!-- LOGO -->
-        <a class="navbar-brand fw-bold"
-           href="index.php">
+            <!-- LOGO -->
+            <a class="navbar-brand fw-bold" href="index.php">
 
-           🍕 Pizza-Time
+                🍕 Pizza-Time
 
-        </a>
+            </a>
 
-        <!-- TOGGLER -->
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+            <!-- TOGGLER -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 
-            <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
 
-        </button>
+            </button>
 
-        <!-- MENU -->
-        <div class="collapse navbar-collapse"
-             id="navbarNav">
+            <!-- MENU -->
+            <div class="collapse navbar-collapse" id="navbarNav">
 
-            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                <!-- HOME -->
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="index.php">
-
-                       Home
-
-                    </a>
-
-                </li>
-
-                <!-- MENU -->
-                <li class="nav-item">
-
-                    <a class="nav-link active"
-                       href="menu.php">
-
-                       Menu
-
-                    </a>
-
-                </li>
-
-                <!-- CHECKOUT -->
-                <li class="nav-item">
-
-                    <a class="nav-link"
-                       href="checkout.php">
-
-                       Checkout
-
-                    </a>
-
-                </li>
-
-                <!-- LOGIN / LOGOUT -->
-                <?php if(isset($_SESSION['username'])) : ?>
-
+                    <!-- HOME -->
                     <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="#">
+                        <a class="nav-link" href="index.php">
 
-                           Halo,
-                           <?php echo $_SESSION['username']; ?>
+                            Home
 
                         </a>
 
                     </li>
 
+                    <!-- MENU -->
                     <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="logout.php">
+                        <a class="nav-link active" href="menu.php">
 
-                           Logout
+                            Menu
 
                         </a>
 
                     </li>
 
-                <?php else : ?>
-
+                    <!-- CHECKOUT -->
                     <li class="nav-item">
 
-                        <a class="nav-link"
-                           href="login.php">
+                        <a class="nav-link" href="checkout.php">
 
-                           Login
+                            Checkout
 
                         </a>
 
                     </li>
 
-                <?php endif; ?>
+                    <!-- LOGIN / LOGOUT -->
+                    <?php if (isset($_SESSION['username'])): ?>
 
-                <!-- CART -->
-                <li class="nav-item ms-lg-3">
+                        <li class="nav-item">
 
-                    <a class="btn btn-light rounded-pill px-3"
-                       href="cart.php">
+                            <a class="nav-link" href="#">
 
-                       🛒 Cart
+                                Halo,
+                                <?php echo $_SESSION['username']; ?>
 
-                    </a>
+                            </a>
 
-                </li>
+                        </li>
 
-            </ul>
+                        <li class="nav-item">
 
-        </div>
+                            <a class="nav-link" href="logout.php">
 
-    </div>
+                                Logout
 
-</nav>
+                            </a>
 
-<!-- TITLE -->
-<section class="container py-5">
+                        </li>
 
-    <h1 class="text-center mb-5 display-4 fw-bold text-danger">
-        MENU PIZZA
-    </h1>
+                    <?php else: ?>
 
-    <!-- ROW -->
-    <div class="row g-4">
+                        <li class="nav-item">
 
-        <?php while($data = mysqli_fetch_assoc($query)) : ?>
+                            <a class="nav-link" href="login.php">
 
-        <!-- CARD -->
-        <div class="col-md-4">
+                                Login
 
-            <div class="card h-100 shadow border-0 rounded-4">
+                            </a>
 
-                <!-- GAMBAR -->
-                <img src="<?php echo $data['gambar']; ?>"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <!-- BODY -->
-                <div class="card-body text-center">
-
-                    <!-- NAMA -->
-                    <h3 class="card-title">
-
-                        <?php echo $data['nama_pizza']; ?>
-
-                    </h3>
-
-                    <!-- DESKRIPSI -->
-                    <p class="card-text">
-
-                        <?php echo $data['deskripsi']; ?>
-
-                    </p>
-
-                    <!-- HARGA -->
-                    <h4 class="text-danger mb-3">
-
-                        Rp
-                        <?php echo number_format($data['harga']); ?>
-
-                    </h4>
-
-                    <!-- BUTTON -->
-                    <?php if(isset($_SESSION['username'])) : ?>
-
-                        <a href="cart.php?id=<?php echo $data['id_pizza']; ?>"
-                           class="btn btn-danger rounded-pill px-4">
-
-                            Order Now
-
-                        </a>
-
-                    <?php else : ?>
-
-                        <a href="login.php"
-                           class="btn btn-danger rounded-pill px-4">
-
-                            Order Now
-
-                        </a>
+                        </li>
 
                     <?php endif; ?>
 
-                </div>
+                    <!-- CART -->
+                    <li class="nav-item ms-lg-3">
+
+                        <a class="btn btn-light rounded-pill px-3" href="cart.php">
+
+                            🛒 Cart
+
+                        </a>
+
+                    </li>
+
+                </ul>
 
             </div>
 
         </div>
 
-        <?php endwhile; ?>
+    </nav>
 
-    </div>
+    <!-- TITLE -->
+    <section class="container py-5">
 
-</section>
+        <h1 class="text-center mb-5 display-4 fw-bold text-danger">
+            MENU PIZZA
+        </h1>
 
-<!-- FOOTER -->
-<footer>
+        <!-- ROW -->
+        <div class="row g-4">
 
-    <div class="footer-container">
+            <?php while ($data = mysqli_fetch_assoc($query)): ?>
 
-        <!-- ABOUT -->
-        <div class="footer-box">
+                <!-- CARD -->
+                <div class="col-md-4">
 
-            <h2>🍕 Pizza-Time</h2>
+                    <div class="card h-100 shadow border-0 rounded-4">
+
+                        <!-- GAMBAR -->
+                        <img src="<?php echo $data['gambar']; ?>" class="card-img-top rounded-top-4" alt="">
+
+                        <!-- BODY -->
+                        <div class="card-body text-center">
+
+                            <!-- NAMA -->
+                            <h3 class="card-title">
+
+                                <?php echo $data['nama_pizza']; ?>
+
+                            </h3>
+
+                            <!-- DESKRIPSI -->
+                            <p class="card-text">
+
+                                <?php echo $data['deskripsi']; ?>
+
+                            </p>
+
+                            <!-- HARGA -->
+                            <h4 class="text-danger mb-3">
+
+                                Rp
+                                <?php echo number_format($data['harga']); ?>
+
+                            </h4>
+
+                            <!-- BUTTON -->
+                        
+                            <?php if (isset($_SESSION['username'])): ?>
+
+                                <a href="cart.php?
+                                nama=<?php echo $data['nama_pizza']; ?>&
+                                harga=<?php echo $data['harga']; ?>&
+                                gambar=<?php echo $data['gambar']; ?>" class="btn btn-danger rounded-pill px-4">
+
+                                    Order Now
+
+                                </a>
+
+                            <?php else: ?>
+
+                                <a href="login.php" class="btn btn-danger rounded-pill px-4">
+
+                                    Order Now
+
+                                </a>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <?php endwhile; ?>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-container">
+
+            <!-- ABOUT -->
+            <div class="footer-box">
+
+                <h2>🍕 Pizza-Time</h2>
+
+                <p>
+                    Pizza-Time adalah tempat terbaik untuk menikmati
+                    pizza dengan topping premium, rasa autentik,
+                    dan kualitas terbaik untuk menemani harimu.
+                </p>
+
+            </div>
+
+            <!-- SOSMED -->
+            <div class="footer-box">
+
+                <h3>Sosial Media</h3>
+
+                <p>📷 Instagram : @pizzatime.id</p>
+
+                <p>🎵 TikTok : @pizzatime.id</p>
+
+                <p>📘 Facebook : Pizza-Time</p>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
 
             <p>
-                Pizza-Time adalah tempat terbaik untuk menikmati
-                pizza dengan topping premium, rasa autentik,
-                dan kualitas terbaik untuk menemani harimu.
+                © 2026 Pizza-Time | All Rights Reserved
             </p>
 
         </div>
 
-        <!-- SOSMED -->
-        <div class="footer-box">
+    </footer>
 
-            <h3>Sosial Media</h3>
-
-            <p>📷 Instagram : @pizzatime.id</p>
-
-            <p>🎵 TikTok : @pizzatime.id</p>
-
-            <p>📘 Facebook : Pizza-Time</p>
-
-        </div>
-
-    </div>
-
-    <div class="copyright">
-
-        <p>
-            © 2026 Pizza-Time | All Rights Reserved
-        </p>
-
-    </div>
-
-</footer>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
