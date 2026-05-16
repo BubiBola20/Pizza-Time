@@ -5,10 +5,13 @@ $user = "root";
 $pass = "";
 $db   = "pizza_time";
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+$koneksi = mysqli_connect($host, $user, $pass, $db);
 
-if (!$conn) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+if(!$koneksi){
+
+    die("Koneksi database gagal : "
+        . mysqli_connect_error());
+
 }
 
 ?>

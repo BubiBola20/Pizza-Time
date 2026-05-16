@@ -1,42 +1,63 @@
-body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-}
+/* RESET */
 
-.main-card {
-    border-radius: 15px;
-    padding: 30px;
-}
-
-.title {
-    color: #E63946;
-    font-weight: bold;
-}
-
-.btn-pizza {
-    background-color: #E63946;
-    color: white;
-    border: none;
-}
-
-.btn-pizza:hover {
-    background-color: #c92c3a;
-    color: white;
-}
-
-/* awal index*/
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
+
+/* BODY */
 
 body{
     background-color: #f4e2e2;
+    font-family: Arial, sans-serif;
 }
 
-/* hero buat misahin kanan kiri*/
+/* GLOBAL */
+
+.title{
+    color: #E63946;
+    font-weight: bold;
+}
+
+.btn-pizza{
+    background-color: #ef4444;
+    color: white;
+    border: none;
+}
+
+.btn-pizza:hover{
+    background-color: #c92c3a;
+    color: white;
+}
+
+/* CARD LOGIN REGISTER */
+
+.main-card{
+    border-radius: 15px;
+    padding: 30px;
+}
+
+/* NAVBAR */
+
+.navbar-brand{
+    font-weight: bold;
+    color: white !important;
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+.nav-link{
+    color: white !important;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.nav-link:hover{
+    color: #ffe066 !important;
+}
+
+/* HERO SECTION */
 
 .hero{
     width: 100%;
@@ -49,7 +70,7 @@ body{
     padding: 70px 90px;
 }
 
-/* kiri */
+/* HERO KIRI */
 
 .hero-left{
     width: 50%;
@@ -85,7 +106,7 @@ body{
     margin-bottom: 40px;
 }
 
-/* BUTTON */
+/* BUTTON HERO */
 
 .buttons{
     display: flex;
@@ -106,7 +127,7 @@ body{
     background-color: white;
 }
 
-/* kanan */
+/* HERO KANAN */
 
 .hero-right{
     width: 50%;
@@ -129,7 +150,7 @@ body{
     position: absolute;
 }
 
-/* card */
+/* FOOD CARD */
 
 .food-card{
     width: 430px;
@@ -145,6 +166,8 @@ body{
     z-index: 2;
 
     position: relative;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 .food-card img{
@@ -179,7 +202,7 @@ body{
     margin: auto;
 }
 
-/* menu */
+/* MENU CARD */
 
 .card img{
     height: 250px;
@@ -191,17 +214,21 @@ body{
 footer{
     background-color: #d62828;
     color: white;
+
     padding: 60px 80px 20px;
 }
 
 .footer-container{
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 50px;
 }
 
 .footer-box{
-    width: 30%;
+    width: 50%;
 }
+
 
 .footer-box h2,
 .footer-box h3{
@@ -216,11 +243,8 @@ footer{
 .copyright{
     margin-top: 40px;
     text-align: center;
+
     border-top: 1px solid rgba(255,255,255,0.3);
+
     padding-top: 20px;
-}
-/* awal menu*/
-.card img{
-    height: 250px;
-    object-fit: cover;
 }

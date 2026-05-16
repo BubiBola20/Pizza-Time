@@ -1,68 +1,228 @@
+<?php
+session_start();
+
+include 'koneksi.php';
+
+// AMBIL DATA PIZZA
+$query = mysqli_query($koneksi,
+    "SELECT * FROM pizza");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Pizza Time - Menu</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="css/style.css">
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar bg-danger">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">🍕 Piza-Time</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar bg-danger">
+
+    <div class="container">
+
+        <!-- LOGO -->
+        <a class="navbar-brand fw-bold"
+           href="index.php">
+
+           🍕 Pizza-Time
+
+        </a>
+
+        <!-- TOGGLER -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
             <span class="navbar-toggler-icon"></span>
+
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link " href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="menu.php">Menu</a></li>
-                <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="cart.php">🛒 </a></li>
+        <!-- MENU -->
+        <div class="collapse navbar-collapse"
+             id="navbarNav">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <!-- HOME -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="index.php">
+
+                       Home
+
+                    </a>
+
+                </li>
+
+                <!-- MENU -->
+                <li class="nav-item">
+
+                    <a class="nav-link active"
+                       href="menu.php">
+
+                       Menu
+
+                    </a>
+
+                </li>
+
+                <!-- CHECKOUT -->
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="checkout.php">
+
+                       Checkout
+
+                    </a>
+
+                </li>
+
+                <!-- LOGIN / LOGOUT -->
+                <?php if(isset($_SESSION['username'])) : ?>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="#">
+
+                           Halo,
+                           <?php echo $_SESSION['username']; ?>
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="logout.php">
+
+                           Logout
+
+                        </a>
+
+                    </li>
+
+                <?php else : ?>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="login.php">
+
+                           Login
+
+                        </a>
+
+                    </li>
+
+                <?php endif; ?>
+
+                <!-- CART -->
+                <li class="nav-item ms-lg-3">
+
+                    <a class="btn btn-light rounded-pill px-3"
+                       href="cart.php">
+
+                       🛒 Cart
+
+                    </a>
+
+                </li>
+
             </ul>
+
         </div>
+
     </div>
+
 </nav>
 
+<!-- TITLE -->
 <section class="container py-5">
 
-    <h1 class="text-center mb-5 display-3 fw-bold">
+    <h1 class="text-center mb-5 display-4 fw-bold text-danger">
         MENU PIZZA
     </h1>
 
-    <!-- CARD MENU -->
+    <!-- ROW -->
     <div class="row g-4">
 
-        <!-- card 1 -->
+        <?php while($data = mysqli_fetch_assoc($query)) : ?>
+
+        <!-- CARD -->
         <div class="col-md-4">
 
             <div class="card h-100 shadow border-0 rounded-4">
 
-                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000"
+                <!-- GAMBAR -->
+                <img src="<?php echo $data['gambar']; ?>"
                      class="card-img-top rounded-top-4"
                      alt="">
 
+                <!-- BODY -->
                 <div class="card-body text-center">
 
+                    <!-- NAMA -->
                     <h3 class="card-title">
-                        Pepperoni Pizza
+
+                        <?php echo $data['nama_pizza']; ?>
+
                     </h3>
 
+                    <!-- DESKRIPSI -->
                     <p class="card-text">
-                        Pizza dengan pepperoni premium.
+
+                        <?php echo $data['deskripsi']; ?>
+
                     </p>
 
+                    <!-- HARGA -->
                     <h4 class="text-danger mb-3">
-                        Rp 45.000
+
+                        Rp
+                        <?php echo number_format($data['harga']); ?>
+
                     </h4>
 
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
+                    <!-- BUTTON -->
+                    <?php if(isset($_SESSION['username'])) : ?>
+
+                        <a href="cart.php?id=<?php echo $data['id_pizza']; ?>"
+                           class="btn btn-danger rounded-pill px-4">
+
+                            Order Now
+
+                        </a>
+
+                    <?php else : ?>
+
+                        <a href="login.php"
+                           class="btn btn-danger rounded-pill px-4">
+
+                            Order Now
+
+                        </a>
+
+                    <?php endif; ?>
 
                 </div>
 
@@ -70,315 +230,57 @@
 
         </div>
 
-        <!-- card 2 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsksPyvPntSJGOPoaFE2XcDXfHP9eVHvHrmQ&s"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Cheese Pizza
-                    </h3>
-
-                    <p class="card-text">
-                        Lelehan mozzarella super creamy.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 40.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- card 3 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1000"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Meat Lovers
-                    </h3>
-
-                    <p class="card-text">
-                        Daging melimpah dan juicy.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 55.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- card 4 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?q=80&w=1000"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Hawaiian Pizza
-                    </h3>
-
-                    <p class="card-text">
-                        Kombinasi nanas dan ham.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 48.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- card 5 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1000"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Veggie Pizza
-                    </h3>
-
-                    <p class="card-text">
-                        Pizza sehat dengan sayuran fresh.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 42.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- card 6 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=1000"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        BBQ Pizza
-                    </h3>
-
-                    <p class="card-text">
-                        Saus BBQ dengan daging asap.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 50.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-         <!-- card 7 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgtuH0yFOOqoRaEpBetx5Sh-duq9Cgjs3hzA&s"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Chiken Pizaa
-                    </h3>
-
-                    <p class="card-text">
-                        Kelembutan daging ayam yang m.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 200.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-         <!-- card 8 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxFR2Y4oTQYJVyNFWBUzMhPwDCxUmLTbADvg&s"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Spicy Pizaa
-                    </h3>
-
-                    <p class="card-text">
-                        Saus Pizza yang pedas.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 55.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-         <!-- card 9 -->
-        <div class="col-md-4">
-
-            <div class="card h-100 shadow border-0 rounded-4">
-
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqc6CExuNUuEJ-nis8XJp_nHvQ0AfmxrCCUw&s"
-                     class="card-img-top rounded-top-4"
-                     alt="">
-
-                <div class="card-body text-center">
-
-                    <h3 class="card-title">
-                        Saesage Pizaa
-                    </h3>
-
-                    <p class="card-text">
-                        Saussage dengan daging sapu_sapu.
-                    </p>
-
-                    <h4 class="text-danger mb-3">
-                        Rp 100.000
-                    </h4>
-
-                    <a href="cart.php" class="btn btn-danger rounded-pill px-4">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
+        <?php endwhile; ?>
 
     </div>
 
 </section>
-<!-- fotter mase -->
+
+<!-- FOOTER -->
 <footer>
 
     <div class="footer-container">
 
+        <!-- ABOUT -->
         <div class="footer-box">
+
             <h2>🍕 Pizza-Time</h2>
+
+            <p>
+                Pizza-Time adalah tempat terbaik untuk menikmati
+                pizza dengan topping premium, rasa autentik,
+                dan kualitas terbaik untuk menemani harimu.
+            </p>
+
         </div>
 
+        <!-- SOSMED -->
         <div class="footer-box">
-            <h3>Informasi</h3>
-            <p>Tentang Kami</p>
-            <p>Promo</p>
-            <p>Lokasi</p>
-        </div>
 
-        <div class="footer-box">
-            <h3>Jam Buka</h3>
-            <p>Senin - Jumat : 10.00 - 22.00</p>
-            <p>Sabtu - Minggu : 09.00 - 23.00</p>
-        </div>
+            <h3>Sosial Media</h3>
 
-         <div class="footer-box">
-            <h3>Order Online</h3>
-            🛵<p>GrabFood</p>
-            🛵<p>GoFood</p>
-           🛵 <p>ShopeeFood</p>
-        </div>
+            <p>📷 Instagram : @pizzatime.id</p>
 
-        <div class="footer-box">
-            <h3>Sosmed</h3>
-            📷 <p>Instagram : @pizzatime.id</p>
-            🎵 <p>TikTok : @pizzatime.id</p>
-            📘 <p>Facebook : Pizza-Time</p>
+            <p>🎵 TikTok : @pizzatime.id</p>
+
+            <p>📘 Facebook : Pizza-Time</p>
+
         </div>
 
     </div>
 
     <div class="copyright">
-        <p>© 2026 Pizza-Time | All Rights Reserved</p>
+
+        <p>
+            © 2026 Pizza-Time | All Rights Reserved
+        </p>
+
     </div>
 
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2026 at 07:09 AM
+-- Generation Time: May 16, 2026 at 08:14 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `orders` (
   `id_order` int(11) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
-  `total` int(11) DEFAULT NULL
+  `id_user` int(11) NOT NULL,
+  `tanggal_order` timestamp NOT NULL DEFAULT current_timestamp(),
+  `total_harga` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -42,9 +42,10 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `order_detail` (
   `id_detail` int(11) NOT NULL,
-  `id_order` int(11) DEFAULT NULL,
-  `id_pizza` int(11) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL
+  `id_order` int(11) NOT NULL,
+  `id_pizza` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `subtotal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -55,18 +56,23 @@ CREATE TABLE `order_detail` (
 
 CREATE TABLE `pizza` (
   `id_pizza` int(11) NOT NULL,
-  `nama_pizza` varchar(100) DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL
+  `nama_pizza` varchar(100) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `harga` int(11) NOT NULL,
+  `gambar` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pizza`
 --
 
-INSERT INTO `pizza` (`id_pizza`, `nama_pizza`, `harga`) VALUES
-(1, 'Pepperoni Pizza', 50000),
-(2, 'Cheese Pizza', 45000),
-(3, 'BBQ Chicken Pizza', 60000);
+INSERT INTO `pizza` (`id_pizza`, `nama_pizza`, `deskripsi`, `harga`, `gambar`) VALUES
+(1, 'Pepperoni Pizza', 'Pizza dengan pepperoni premium dan keju melimpah.', 45000, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000'),
+(2, 'Cheese Pizza', 'Lelehan mozzarella super creamy dan lembut.', 40000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsksPyvPntSJGOPoaFE2XcDXfHP9eVHvHrmQ&s'),
+(3, 'Meat Lovers', 'Daging melimpah dengan rasa juicy dan gurih.', 55000, 'https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=1000'),
+(4, 'Hawaiian Pizza', 'Kombinasi nanas dan ham yang unik dan lezat.', 48000, 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?q=80&w=1000'),
+(5, 'Veggie Pizza', 'Pizza sehat dengan sayuran fresh pilihan.', 42000, 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1000'),
+(6, 'BBQ Pizza', 'Saus BBQ spesial dengan daging asap premium.', 50000, 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?q=80&w=1000');
 
 -- --------------------------------------------------------
 
@@ -75,18 +81,18 @@ INSERT INTO `pizza` (`id_pizza`, `nama_pizza`, `harga`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id_user` int(11) NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `role` varchar(20) DEFAULT NULL
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','customer') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_user`, `username`, `password`, `role`) VALUES
-(1, 'admin', 'admin123', 'admin');
+INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
+(1, 'admin', '123', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -96,13 +102,16 @@ INSERT INTO `users` (`id_user`, `username`, `password`, `role`) VALUES
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id_order`);
+  ADD PRIMARY KEY (`id_order`),
+  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  ADD PRIMARY KEY (`id_detail`);
+  ADD PRIMARY KEY (`id_detail`),
+  ADD KEY `id_order` (`id_order`),
+  ADD KEY `id_pizza` (`id_pizza`);
 
 --
 -- Indexes for table `pizza`
@@ -114,7 +123,7 @@ ALTER TABLE `pizza`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id_user`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -136,13 +145,30 @@ ALTER TABLE `order_detail`
 -- AUTO_INCREMENT for table `pizza`
 --
 ALTER TABLE `pizza`
-  MODIFY `id_pizza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pizza` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `order_detail`
+--
+ALTER TABLE `order_detail`
+  ADD CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`),
+  ADD CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`id_pizza`) REFERENCES `pizza` (`id_pizza`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
