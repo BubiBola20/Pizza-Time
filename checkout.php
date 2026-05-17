@@ -2,6 +2,15 @@
 
 session_start();
 
+// CEK LOGIN
+if(!isset($_SESSION['username'])){
+
+    header("Location: login.php");
+
+    exit;
+
+}
+
 // Hitung total harga
 $total = 0;
 
