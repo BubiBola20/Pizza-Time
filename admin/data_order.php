@@ -100,7 +100,7 @@ $order = mysqli_query($koneksi,
 
                 <li class="nav-item mb-2">
 
-                    <a href="data_user.php"
+                    <a href="data_users.php"
                        class="nav-link text-white">
 
                        👤 Data User
