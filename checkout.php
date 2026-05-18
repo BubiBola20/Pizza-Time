@@ -2,38 +2,62 @@
 
 session_start();
 
-// CEK LOGIN
-if(!isset($_SESSION['username'])){
+include 'koneksi.php';
 
-    header("Location: login.php");
-
-    exit;
-
-}
-
-// Hitung total harga
+// HITUNG TOTAL
 $total = 0;
 
-if (isset($_SESSION['cart'])) {
+if(isset($_SESSION['cart'])){
 
-    foreach ($_SESSION['cart'] as $cart) {
+    foreach($_SESSION['cart'] as $cart){
 
         $total += $cart['harga'];
+
     }
+
 }
 
 
-// Proses checkout
-if (isset($_POST['checkout'])) {
+// CHECKOUT
+if(isset($_POST['checkout'])){
 
-    // Hapus semua cart
+    $nama        = $_POST['nama'];
+    $email       = $_POST['email'];
+    $no_hp       = $_POST['no_hp'];
+    $alamat      = $_POST['alamat'];
+    $pembayaran  = $_POST['pembayaran'];
+
+    // SIMPAN KE DATABASE
+    mysqli_query($koneksi,
+
+    "INSERT INTO pesanan
+
+    VALUES(
+
+        '',
+        '$nama',
+        '$email',
+        '$no_hp',
+        '$alamat',
+        '$pembayaran',
+        '$total',
+        NOW()
+
+    )");
+
+    // HAPUS CART
     unset($_SESSION['cart']);
 
     echo "
+
     <script>
-        alert('Pesanan berhasil dibuat 🍕');
+
+        alert('Pesanan berhasil dibuat! 🍕');
+
         window.location='index.php';
+
     </script>
+
     ";
 }
 
@@ -60,253 +84,240 @@ if (isset($_POST['checkout'])) {
 
 </head>
 
-<body style="background-color: #f8f4f1;">
+<body style="background-color:#f8f4f1;">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger py-3">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger py-3">
 
-        <div class="container">
+    <div class="container">
 
-            <a href="index.php"
-               class="navbar-brand fw-bold fs-3">
+        <a class="navbar-brand fw-bold fs-3"
+           href="index.php">
 
-               🍕 Pizza-Time
+           🍕 Pizza-Time
 
-            </a>
+        </a>
 
-            <a href="cart.php"
-               class="btn btn-light rounded-pill px-4">
+        <a href="cart.php"
+           class="btn btn-light rounded-pill px-4">
 
-               ← Kembali Cart
+           ← Kembali Cart
 
-            </a>
+        </a>
 
-        </div>
+    </div>
 
-    </nav>
+</nav>
 
+<!-- CHECKOUT -->
+<section class="container py-5">
 
-    <!-- Checkout -->
-    <section class="container py-5">
+    <h1 class="text-center fw-bold mb-5">
 
-        <h1 class="text-center fw-bold mb-5">
+        💳 Checkout Pesanan
 
-            💳 Checkout Pesanan
+    </h1>
 
-        </h1>
+    <div class="row g-4">
 
-        <div class="row g-4">
+        <!-- FORM -->
+        <div class="col-lg-7">
 
-            <!-- Form -->
-            <div class="col-lg-7">
+            <div class="card border-0 shadow rounded-4 p-4">
 
-                <div class="card border-0 shadow rounded-4 p-4">
+                <h3 class="fw-bold mb-4">
 
-                    <h3 class="fw-bold mb-4">
+                    Data Pemesan
 
-                        Data Pemesan
+                </h3>
 
-                    </h3>
+                <form method="POST">
 
-                    <form method="POST">
+                    <!-- NAMA -->
+                    <div class="mb-3">
 
-                        <!-- Nama -->
-                        <div class="mb-3">
+                        <label class="form-label">
+                            Nama Lengkap
+                        </label>
 
-                            <label class="form-label">
-                                Nama Lengkap
-                            </label>
+                        <input type="text"
+                               name="nama"
+                               class="form-control rounded-3"
+                               required>
 
-                            <input type="text"
-                                   class="form-control rounded-3"
-                                   placeholder="Masukkan nama lengkap"
-                                   required>
+                    </div>
 
-                        </div>
+                    <!-- EMAIL -->
+                    <div class="mb-3">
 
+                        <label class="form-label">
+                            Email
+                        </label>
 
-                        <!-- Email -->
-                        <div class="mb-3">
+                        <input type="email"
+                               name="email"
+                               class="form-control rounded-3"
+                               required>
 
-                            <label class="form-label">
-                                Email
-                            </label>
+                    </div>
 
-                            <input type="email"
-                                   class="form-control rounded-3"
-                                   placeholder="Masukkan email"
-                                   required>
+                    <!-- NO HP -->
+                    <div class="mb-3">
 
-                        </div>
+                        <label class="form-label">
+                            Nomor HP
+                        </label>
 
+                        <input type="text"
+                               name="no_hp"
+                               class="form-control rounded-3"
+                               required>
 
-                        <!-- Nomor HP -->
-                        <div class="mb-3">
+                    </div>
 
-                            <label class="form-label">
-                                Nomor HP
-                            </label>
+                    <!-- ALAMAT -->
+                    <div class="mb-4">
 
-                            <input type="text"
-                                   class="form-control rounded-3"
-                                   placeholder="Masukkan nomor hp"
-                                   required>
+                        <label class="form-label">
+                            Alamat
+                        </label>
 
-                        </div>
+                        <textarea name="alamat"
+                                  class="form-control rounded-3"
+                                  rows="4"
+                                  required></textarea>
 
+                    </div>
 
-                        <!-- Alamat -->
-                        <div class="mb-4">
+                    <!-- PEMBAYARAN -->
+                    <div class="mb-4">
 
-                            <label class="form-label">
-                                Alamat Lengkap
-                            </label>
+                        <label class="form-label">
+                            Metode Pembayaran
+                        </label>
 
-                            <textarea class="form-control rounded-3"
-                                      rows="4"
-                                      placeholder="Masukkan alamat lengkap"
-                                      required></textarea>
+                        <select name="pembayaran"
+                                class="form-select rounded-3">
 
-                        </div>
+                            <option>Transfer Bank</option>
 
+                            <option>COD</option>
 
-                        <!-- Pembayaran -->
-                        <div class="mb-4">
+                            <option>E-Wallet</option>
 
-                            <label class="form-label">
-                                Metode Pembayaran
-                            </label>
+                        </select>
 
-                            <select class="form-select rounded-3">
+                    </div>
 
-                                <option>Transfer Bank</option>
+                    <!-- BUTTON -->
+                    <button type="submit"
+                            name="checkout"
+                            class="btn btn-danger rounded-pill w-100 py-3">
 
-                                <option>COD</option>
+                        Pesan Sekarang
 
-                                <option>E-Wallet</option>
+                    </button>
 
-                            </select>
-
-                        </div>
-
-
-                        <!-- Button -->
-                        <button type="submit"
-                                name="checkout"
-                                class="btn btn-danger rounded-pill w-100 py-3">
-
-                            Pesan Sekarang
-
-                        </button>
-
-                    </form>
-
-                </div>
+                </form>
 
             </div>
 
+        </div>
 
-            <!-- Ringkasan -->
-            <div class="col-lg-5">
+        <!-- SUMMARY -->
+        <div class="col-lg-5">
 
-                <div class="card border-0 shadow rounded-4 p-4 sticky-top"
-                     style="top: 100px;">
+            <div class="card border-0 shadow rounded-4 p-4 sticky-top"
+                 style="top:100px;">
 
-                    <h3 class="fw-bold mb-4">
+                <h3 class="fw-bold mb-4">
 
-                        Ringkasan Pesanan
+                    Ringkasan Pesanan
 
-                    </h3>
+                </h3>
 
-                    <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) : ?>
+                <?php
 
-                        <?php foreach ($_SESSION['cart'] as $cart) : ?>
+                if(isset($_SESSION['cart'])){
 
-                            <div class="d-flex align-items-center mb-4">
+                foreach($_SESSION['cart'] as $cart){
 
-                                <!-- Gambar -->
-                                <img src="<?php echo $cart['gambar']; ?>"
+                ?>
 
-                                     width="90"
-                                     height="90"
+                <div class="d-flex align-items-center mb-4">
 
-                                     style="object-fit: cover;
-                                            border-radius: 15px;">
+                    <img src="<?php echo $cart['gambar']; ?>"
 
-                                <!-- Info -->
-                                <div class="ms-3">
+                         width="90"
+                         height="90"
 
-                                    <h5 class="mb-1">
+                         style="object-fit:cover;
+                                border-radius:15px;">
 
-                                        <?php echo $cart['nama']; ?>
-
-                                    </h5>
-
-                                    <p class="text-danger mb-0">
-
-                                        Rp <?php echo number_format($cart['harga']); ?>
-
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        <?php endforeach; ?>
-
-                    <?php else : ?>
-
-                        <p class="text-muted">
-
-                            Cart masih kosong 🛒
-
-                        </p>
-
-                    <?php endif; ?>
-
-
-                    <hr>
-
-                    <!-- Subtotal -->
-                    <div class="d-flex justify-content-between mb-3">
-
-                        <h5>Subtotal</h5>
+                    <div class="ms-3">
 
                         <h5>
 
-                            Rp <?php echo number_format($total); ?>
+                            <?php echo $cart['nama']; ?>
 
                         </h5>
 
-                    </div>
+                        <p class="text-danger mb-0">
 
+                            Rp
+                            <?php echo number_format($cart['harga']); ?>
 
-                    <!-- Ongkir -->
-                    <div class="d-flex justify-content-between mb-3">
-
-                        <h5>Ongkir</h5>
-
-                        <h5>Rp 10.000</h5>
+                        </p>
 
                     </div>
 
-                    <hr>
+                </div>
 
+                <?php
+                }
+                }
+                ?>
 
-                    <!-- Total -->
-                    <div class="d-flex justify-content-between">
+                <hr>
 
-                        <h4 class="fw-bold">
-                            Total
-                        </h4>
+                <!-- SUBTOTAL -->
+                <div class="d-flex justify-content-between mb-3">
 
-                        <h4 class="text-danger fw-bold">
+                    <h5>Subtotal</h5>
 
-                            Rp <?php echo number_format($total + 10000); ?>
+                    <h5>
 
-                        </h4>
+                        Rp
+                        <?php echo number_format($total); ?>
 
-                    </div>
+                    </h5>
+
+                </div>
+
+                <!-- ONGKIR -->
+                <div class="d-flex justify-content-between mb-3">
+
+                    <h5>Ongkir</h5>
+
+                    <h5>Rp 10.000</h5>
+
+                </div>
+
+                <hr>
+
+                <!-- TOTAL -->
+                <div class="d-flex justify-content-between">
+
+                    <h4 class="fw-bold">
+                        Total
+                    </h4>
+
+                    <h4 class="text-danger fw-bold">
+
+                        Rp
+                        <?php echo number_format($total + 10000); ?>
+
+                    </h4>
 
                 </div>
 
@@ -314,11 +325,9 @@ if (isset($_POST['checkout'])) {
 
         </div>
 
-    </section>
+    </div>
 
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</section>
 
 </body>
 </html>

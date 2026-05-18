@@ -1,30 +1,29 @@
 <?php
+
 session_start();
 
 include '../koneksi.php';
 
 // CEK LOGIN
-if(!isset($_SESSION['role'])){
+if (!isset($_SESSION['role'])) {
 
     header("Location: ../login.php");
-
+    exit;
 }
 
 // CEK ADMIN
-if($_SESSION['role'] != 'admin'){
+if ($_SESSION['role'] != 'admin') {
 
     header("Location: ../index.php");
-
+    exit;
 }
 
-// AMBIL DATA ORDER
+
+// AMBIL DATA PESANAN
 $order = mysqli_query($koneksi,
 
-    "SELECT orders.*, users.username
-     FROM orders
-     JOIN users
-     ON orders.id_user = users.id_user
-     ORDER BY orders.id_order DESC"
+    "SELECT * FROM pesanan
+     ORDER BY id DESC"
 
 );
 
@@ -42,7 +41,7 @@ $order = mysqli_query($koneksi,
     <title>Data Order</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
     <!-- CSS -->
@@ -50,7 +49,8 @@ $order = mysqli_query($koneksi,
           href="../css/style.css">
 
 </head>
-<body>
+
+<body style="background-color:#f8f4f1;">
 
 <div class="container-fluid">
 
@@ -60,7 +60,9 @@ $order = mysqli_query($koneksi,
         <div class="col-md-2 bg-danger min-vh-100 p-4">
 
             <h3 class="text-white fw-bold mb-4">
+
                 🍕 Pizza-Time
+
             </h3>
 
             <ul class="nav flex-column">
@@ -90,7 +92,7 @@ $order = mysqli_query($koneksi,
                 <li class="nav-item mb-2">
 
                     <a href="data_order.php"
-                       class="nav-link text-white">
+                       class="nav-link text-white fw-bold">
 
                        🛒 Data Order
 
@@ -124,63 +126,87 @@ $order = mysqli_query($koneksi,
 
         </div>
 
+
         <!-- CONTENT -->
         <div class="col-md-10 p-5">
 
             <h1 class="fw-bold mb-4">
+
                 Data Order
+
             </h1>
 
             <div class="card border-0 shadow rounded-4 p-4">
 
-                <table class="table table-hover">
+                <div class="table-responsive">
 
-                    <thead>
+                    <table class="table table-hover align-middle">
 
-                        <tr>
+                        <thead>
 
-                            <th>No</th>
-                            <th>Customer</th>
-                            <th>Total Harga</th>
-                            <th>Tanggal</th>
+                            <tr>
 
-                        </tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>No HP</th>
+                                <th>Pembayaran</th>
+                                <th>Total</th>
+                                <th>Tanggal</th>
 
-                    </thead>
+                            </tr>
 
-                    <tbody>
+                        </thead>
 
-                        <?php
-                        $no = 1;
+                        <tbody>
 
-                        while($data = mysqli_fetch_assoc($order)) :
-                        ?>
+                            <?php
+                            $no = 1;
 
-                        <tr>
+                            while ($data = mysqli_fetch_assoc($order)) :
+                            ?>
 
-                            <td>
-                                <?php echo $no++; ?>
-                            </td>
+                            <tr>
 
-                            <td>
-                                <?php echo $data['username']; ?>
-                            </td>
+                                <td>
+                                    <?php echo $no++; ?>
+                                </td>
 
-                            <td>
-                                Rp <?php echo number_format($data['total_harga']); ?>
-                            </td>
+                                <td>
+                                    <?php echo $data['nama']; ?>
+                                </td>
 
-                            <td>
-                                <?php echo $data['tanggal_order']; ?>
-                            </td>
+                                <td>
+                                    <?php echo $data['email']; ?>
+                                </td>
 
-                        </tr>
+                                <td>
+                                    <?php echo $data['no_hp']; ?>
+                                </td>
 
-                        <?php endwhile; ?>
+                                <td>
+                                    <?php echo $data['pembayaran']; ?>
+                                </td>
 
-                    </tbody>
+                                <td class="text-danger fw-bold">
 
-                </table>
+                                    Rp <?php echo number_format($data['total']); ?>
+
+                                </td>
+
+                                <td>
+                                    <?php echo $data['tanggal']; ?>
+                                </td>
+
+                            </tr>
+
+                            <?php endwhile; ?>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
