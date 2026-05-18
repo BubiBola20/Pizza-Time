@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2026 at 03:49 PM
+-- Generation Time: May 18, 2026 at 03:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,33 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `pizza_time`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orders`
---
-
-CREATE TABLE `orders` (
-  `id_order` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `tanggal_order` timestamp NOT NULL DEFAULT current_timestamp(),
-  `total_harga` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_detail`
---
-
-CREATE TABLE `order_detail` (
-  `id_detail` int(11) NOT NULL,
-  `id_order` int(11) NOT NULL,
-  `id_pizza` int(11) NOT NULL,
-  `jumlah` int(11) NOT NULL,
-  `subtotal` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -125,21 +98,6 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
 --
 
 --
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id_order`),
-  ADD KEY `id_user` (`id_user`);
-
---
--- Indexes for table `order_detail`
---
-ALTER TABLE `order_detail`
-  ADD PRIMARY KEY (`id_detail`),
-  ADD KEY `id_order` (`id_order`),
-  ADD KEY `id_pizza` (`id_pizza`);
-
---
 -- Indexes for table `pesanan`
 --
 ALTER TABLE `pesanan`
@@ -162,18 +120,6 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `order_detail`
---
-ALTER TABLE `order_detail`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
@@ -190,23 +136,6 @@ ALTER TABLE `pizza`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `orders`
---
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
-
---
--- Constraints for table `order_detail`
---
-ALTER TABLE `order_detail`
-  ADD CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`),
-  ADD CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`id_pizza`) REFERENCES `pizza` (`id_pizza`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
