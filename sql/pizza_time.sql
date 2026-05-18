@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2026 at 08:14 AM
+-- Generation Time: May 18, 2026 at 03:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,6 +51,31 @@ CREATE TABLE `order_detail` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pesanan`
+--
+
+CREATE TABLE `pesanan` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `no_hp` varchar(20) DEFAULT NULL,
+  `alamat` text DEFAULT NULL,
+  `pembayaran` varchar(50) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pesanan`
+--
+
+INSERT INTO `pesanan` (`id`, `nama`, `email`, `no_hp`, `alamat`, `pembayaran`, `total`, `tanggal`) VALUES
+(1, 'bahar', 'baha@gmail.com', '083104724091', 'bali', 'Transfer Bank', 40000, '2026-05-18 13:39:12'),
+(2, 'tristan', 'tristan@gmail.com', '0303939', 'jogja', 'COD', 45000, '2026-05-18 13:42:35');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pizza`
 --
 
@@ -92,7 +117,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
-(1, 'admin', '123', 'admin');
+(1, 'admin', '123', 'admin'),
+(2, 'xyzbharr', '123', 'customer');
 
 --
 -- Indexes for dumped tables
@@ -112,6 +138,12 @@ ALTER TABLE `order_detail`
   ADD PRIMARY KEY (`id_detail`),
   ADD KEY `id_order` (`id_order`),
   ADD KEY `id_pizza` (`id_pizza`);
+
+--
+-- Indexes for table `pesanan`
+--
+ALTER TABLE `pesanan`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `pizza`
@@ -142,6 +174,12 @@ ALTER TABLE `order_detail`
   MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `pesanan`
+--
+ALTER TABLE `pesanan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `pizza`
 --
 ALTER TABLE `pizza`
@@ -151,7 +189,7 @@ ALTER TABLE `pizza`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
